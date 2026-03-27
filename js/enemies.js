@@ -1,0 +1,70 @@
+/* ============================================
+   ENEMY DEFINITIONS
+   ============================================ */
+
+const ENEMY_TYPES = {
+    goblin: {
+        name: "Goblin",
+        hp: 30,
+        speed: 1.5,
+        reward: 5,
+        color: "#4ade80",
+        size: 0.5,
+        damage: 1,
+    },
+    orc: {
+        name: "Orc",
+        hp: 80,
+        speed: 1.0,
+        reward: 10,
+        color: "#65a30d",
+        size: 0.6,
+        damage: 1,
+    },
+    wolf: {
+        name: "Wolf",
+        hp: 50,
+        speed: 2.5,
+        reward: 8,
+        color: "#a1a1aa",
+        size: 0.5,
+        damage: 1,
+    },
+    darkKnight: {
+        name: "Dark Knight",
+        hp: 180,
+        speed: 0.9,
+        reward: 18,
+        color: "#6366f1",
+        size: 0.65,
+        damage: 2,
+    },
+    troll: {
+        name: "Troll",
+        hp: 400,
+        speed: 0.6,
+        reward: 30,
+        color: "#78716c",
+        size: 0.8,
+        damage: 3,
+    },
+    demon: {
+        name: "Demon",
+        hp: 700,
+        speed: 1.1,
+        reward: 50,
+        color: "#dc2626",
+        size: 0.7,
+        damage: 4,
+    },
+    dragon: {
+        name: "Dragon",
+        hp: 2000,
+        speed: 0.5,
+        reward: 150,
+        color: "#b91c1c",
+        size: 1.0,
+        damage: 10,
+        boss: true,
+    },
+};
