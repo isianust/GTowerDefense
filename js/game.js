@@ -164,7 +164,7 @@ const Game = (() => {
 
         // If clicking on a placed tower, select it
         const cell = grid[g.y][g.x];
-        if (cell && cell !== "path") {
+        if (cell && cell !== "path" && cell !== "terrain") {
             selectedTower = cell;
             UI.showTowerInfo(cell);
             return;
