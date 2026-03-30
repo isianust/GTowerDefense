@@ -10,6 +10,67 @@ const UI = (() => {
         if (screen) screen.classList.add("active");
     }
 
+    // ---- Apply Translations ----
+    function applyTranslations() {
+        const t = I18N.t;
+
+        // Menu screen
+        document.querySelector(".game-title").textContent = t("title");
+        document.querySelector(".game-subtitle").textContent = t("subtitle");
+        document.getElementById("btn-play").textContent = t("play");
+        document.getElementById("btn-how").textContent = t("howToPlay");
+        document.getElementById("btn-lang").textContent =
+            I18N.getLang() === "en" ? "🌐 繁體中文" : "🌐 English";
+
+        // How to Play screen
+        const howPanel = document.querySelector(".how-panel");
+        howPanel.querySelector("h2").textContent = t("howTitle");
+        const sections = howPanel.querySelectorAll(".how-section");
+        // Objective section
+        sections[0].querySelector("h3").textContent = "🎯 " + t("objective");
+        sections[0].querySelector("p").textContent = t("objectiveText");
+        // Towers section
+        sections[1].querySelector("h3").textContent = "🏗️ " + t("towers");
+        const towerItems = sections[1].querySelectorAll("li");
+        const towerDescs = ["archerDesc", "cannonDesc", "iceDesc", "lightningDesc", "sniperDesc"];
+        towerItems.forEach((li, i) => {
+            const icon = li.querySelector(".tower-icon");
+            if (icon) {
+                li.innerHTML = "";
+                li.appendChild(icon);
+                li.insertAdjacentHTML("beforeend", " " + t(towerDescs[i]));
+            }
+        });
+        // Controls section
+        sections[2].querySelector("h3").textContent = "🎮 " + t("controls");
+        const controlItems = sections[2].querySelectorAll("li");
+        const controlKeys = ["control1", "control2", "control3", "control4"];
+        controlItems.forEach((li, i) => {
+            li.textContent = t(controlKeys[i]);
+        });
+
+        // Navigation buttons
+        document.getElementById("btn-how-back").textContent = t("back");
+        document.getElementById("btn-level-back").textContent = t("back");
+
+        // Level select heading
+        document.querySelector(".level-panel h2").textContent = t("selectLevel");
+
+        // HUD
+        document.getElementById("btn-start-wave").textContent = t("startWave");
+        document.querySelector("#tower-shop h3").textContent = t("towerShop");
+
+        // Tower info buttons
+        document.getElementById("btn-upgrade").textContent = t("upgrade");
+        document.getElementById("btn-sell").textContent = t("sell");
+        document.getElementById("btn-deselect").textContent = t("close");
+
+        // Overlay buttons
+        document.getElementById("btn-retry").textContent = t("retry");
+        document.getElementById("btn-next").textContent = t("nextLevel");
+        document.getElementById("btn-menu").textContent = t("menu");
+    }
+
     // ---- Level Grid ----
     function buildLevelGrid() {
         const grid = document.getElementById("level-grid");
@@ -27,7 +88,7 @@ const UI = (() => {
             } else {
                 card.innerHTML = `
                     <div class="level-num">${i + 1}</div>
-                    <div style="font-size:0.65rem;color:#94a3b8;margin-top:2px">${LEVELS[i].name}</div>
+                    <div style="font-size:0.65rem;color:#94a3b8;margin-top:2px">${I18N.t("level_" + i)}</div>
                     <div class="level-stars">${starString(stars)}</div>
                 `;
                 card.onclick = () => startLevel(i);
@@ -61,9 +122,10 @@ const UI = (() => {
             const item = document.createElement("div");
             item.className = "shop-item";
             item.dataset.type = key;
+            const towerName = I18N.t("tower_" + key);
             item.innerHTML = `
                 <div class="shop-icon" style="background:${type.color}; display:flex; align-items:center; justify-content:center; font-size:18px;">${type.icon}</div>
-                <span class="shop-name">${type.name}</span>
+                <span class="shop-name">${towerName}</span>
                 <span class="shop-cost">💰 ${type.cost}</span>
             `;
             item.onclick = (e) => {
@@ -106,14 +168,15 @@ const UI = (() => {
 
     // ---- HUD ----
     function updateHUD() {
-        document.getElementById("hud-level").textContent = `📍 Level ${Game.getLevelIndex() + 1}`;
-        document.getElementById("hud-wave").textContent = `🌊 Wave ${Game.getWaveIndex()}/${Game.getTotalWaves()}`;
+        document.getElementById("hud-level").textContent = `📍 ${I18N.t("level")} ${Game.getLevelIndex() + 1}`;
+        document.getElementById("hud-wave").textContent = `🌊 ${I18N.t("wave")} ${Game.getWaveIndex()}/${Game.getTotalWaves()}`;
         document.getElementById("hud-gold").textContent = `💰 ${Game.getGold()}`;
         document.getElementById("hud-lives").textContent = `❤️ ${Game.getLives()}`;
         document.getElementById("hud-score").textContent = `⭐ ${Game.getScore()}`;
         updateShopAffordability();
 
         const waveBtn = document.getElementById("btn-start-wave");
+        waveBtn.textContent = I18N.t("startWave");
         if (Game.isWaveActive() || Game.getWaveIndex() >= Game.getTotalWaves()) {
             waveBtn.disabled = true;
         } else {
@@ -127,32 +190,34 @@ const UI = (() => {
         const type = TOWER_TYPES[tower.type];
         panel.classList.remove("hidden");
 
-        document.getElementById("info-name").textContent = `${type.icon} ${type.name} (Lv ${tower.level + 1})`;
+        const towerName = I18N.t("tower_" + tower.type);
+        document.getElementById("info-name").textContent = `${type.icon} ${towerName} (${I18N.t("lv")} ${tower.level + 1})`;
 
+        const t = I18N.t;
         let statsHtml = `
-            <div>⚔️ Damage: ${tower.damage}</div>
-            <div>📏 Range: ${tower.range.toFixed(1)}</div>
-            <div>⏱️ Fire Rate: ${tower.fireRate}</div>
+            <div>⚔️ ${t("damage")}: ${tower.damage}</div>
+            <div>📏 ${t("range")}: ${tower.range.toFixed(1)}</div>
+            <div>⏱️ ${t("fireRate")}: ${tower.fireRate}</div>
         `;
-        if (tower.splash > 0) statsHtml += `<div>💥 Splash: ${tower.splash.toFixed(1)}</div>`;
-        if (tower.slow > 0) statsHtml += `<div>❄️ Slow: ${Math.round(tower.slow * 100)}%</div>`;
-        if (tower.chain > 0) statsHtml += `<div>⚡ Chain: ${tower.chain}</div>`;
+        if (tower.splash > 0) statsHtml += `<div>💥 ${t("splash")}: ${tower.splash.toFixed(1)}</div>`;
+        if (tower.slow > 0) statsHtml += `<div>❄️ ${t("slow")}: ${Math.round(tower.slow * 100)}%</div>`;
+        if (tower.chain > 0) statsHtml += `<div>⚡ ${t("chain")}: ${tower.chain}</div>`;
         document.getElementById("info-stats").innerHTML = statsHtml;
 
         // Upgrade button
         const upgradeBtn = document.getElementById("btn-upgrade");
         if (tower.level >= type.upgrades.length) {
-            upgradeBtn.textContent = "MAX";
+            upgradeBtn.textContent = t("max");
             upgradeBtn.disabled = true;
         } else {
             const cost = type.upgrades[tower.level].cost;
-            upgradeBtn.textContent = `⬆ Upgrade (${cost}💰)`;
+            upgradeBtn.textContent = `${t("upgrade")} (${cost}💰)`;
             upgradeBtn.disabled = Game.getGold() < cost;
         }
 
         // Sell button
         const refund = Math.floor(tower.totalCost * 0.6);
-        document.getElementById("btn-sell").textContent = `💰 Sell (${refund})`;
+        document.getElementById("btn-sell").textContent = `${t("sell")} (${refund})`;
     }
 
     function hideTowerInfo() {
@@ -162,17 +227,18 @@ const UI = (() => {
     // ---- Overlay ----
     function showOverlay(type, stars, score) {
         const overlay = document.getElementById("overlay");
+        const t = I18N.t;
         overlay.classList.remove("hidden");
 
         if (type === "victory") {
-            document.getElementById("overlay-title").textContent = "🎉 Victory!";
-            document.getElementById("overlay-message").textContent = `Score: ${score}`;
+            document.getElementById("overlay-title").textContent = t("victory");
+            document.getElementById("overlay-message").textContent = `${t("score")}: ${score}`;
             document.getElementById("overlay-stars").textContent = starString(stars);
             document.getElementById("btn-next").style.display =
                 Game.getLevelIndex() + 1 < LEVELS.length ? "inline-block" : "none";
         } else {
-            document.getElementById("overlay-title").textContent = "💀 Defeat";
-            document.getElementById("overlay-message").textContent = "The enemy broke through!";
+            document.getElementById("overlay-title").textContent = t("defeat");
+            document.getElementById("overlay-message").textContent = t("defeatMsg");
             document.getElementById("overlay-stars").textContent = "";
             document.getElementById("btn-next").style.display = "none";
         }
@@ -192,6 +258,13 @@ const UI = (() => {
         document.getElementById("btn-how").onclick = () => showScreen("how-screen");
         document.getElementById("btn-how-back").onclick = () => showScreen("menu-screen");
         document.getElementById("btn-level-back").onclick = () => showScreen("menu-screen");
+
+        // Language toggle
+        document.getElementById("btn-lang").onclick = () => {
+            const newLang = I18N.getLang() === "en" ? "zh-TW" : "en";
+            I18N.setLang(newLang);
+            applyTranslations();
+        };
 
         // HUD
         document.getElementById("btn-start-wave").onclick = () => {
@@ -233,6 +306,9 @@ const UI = (() => {
             hideOverlay();
             showScreen("menu-screen");
         };
+
+        // Apply translations on load
+        applyTranslations();
     }
 
     // ---- Init on load ----
