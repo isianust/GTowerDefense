@@ -87,6 +87,9 @@ const I18N = (() => {
             enemy_troll: "Troll",
             enemy_demon: "Demon",
             enemy_dragon: "Dragon",
+            enemy_lich: "Lich",
+            enemy_titan: "Titan",
+            enemy_phoenix: "Phoenix",
 
             // Level names
             level_0: "The Meadow",
@@ -181,6 +184,9 @@ const I18N = (() => {
             enemy_troll: "巨魔",
             enemy_demon: "惡魔",
             enemy_dragon: "龍",
+            enemy_lich: "巫妖",
+            enemy_titan: "泰坦",
+            enemy_phoenix: "鳳凰",
 
             // Level names
             level_0: "翠綠草原",

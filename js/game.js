@@ -27,6 +27,7 @@ const Game = (() => {
     let gameOver;
     let pathCells;           // Set of "x,y" strings for path
     let hoveredCell;         // {x,y} or null
+    let grassTiles;          // 2D array of grass decoration data
 
     // ---- Initialization ----
     function init(lvlIndex) {
@@ -49,6 +50,37 @@ const Game = (() => {
         for (const p of level.path) {
             grid[p.y][p.x] = "path";
             pathCells.add(p.x + "," + p.y);
+        }
+
+        // Generate grass tile data for terrain diversity
+        grassTiles = [];
+        for (let y = 0; y < level.rows; y++) {
+            grassTiles[y] = [];
+            for (let x = 0; x < level.cols; x++) {
+                const seed = (x * 7919 + y * 6271 + levelIndex * 3571) % 1000;
+                const shade = (seed % 30) - 15;
+                const decoRoll = seed % 100;
+                let decoration = null;
+                if (decoRoll < 8) decoration = "🌸";
+                else if (decoRoll < 14) decoration = "🌿";
+                else if (decoRoll < 20) decoration = "🍀";
+                else if (decoRoll < 24) decoration = "🌾";
+                else if (decoRoll < 27) decoration = "🍄";
+                else if (decoRoll < 30) decoration = "🪨";
+                else if (decoRoll < 33) decoration = "🌻";
+                grassTiles[y][x] = { shade, decoration };
+            }
+        }
+
+        // Mark terrain features as non-buildable
+        if (level.terrain) {
+            for (const feature of level.terrain) {
+                for (const cell of feature.cells) {
+                    if (grid[cell.y] && grid[cell.y][cell.x] === null) {
+                        grid[cell.y][cell.x] = "terrain";
+                    }
+                }
+            }
         }
 
         // State
@@ -498,6 +530,7 @@ const Game = (() => {
         ctx.fillStyle = level.bg;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+        drawTerrain();
         drawGrid();
         drawPath();
         drawTowers();
@@ -506,6 +539,88 @@ const Game = (() => {
         drawParticles();
         drawHoverPreview();
         drawRangeIndicator();
+    }
+
+    function drawTerrain() {
+        for (let y = 0; y < level.rows; y++) {
+            for (let x = 0; x < level.cols; x++) {
+                if (pathCells.has(x + "," + y)) continue;
+
+                const px = offsetX + x * cellSize;
+                const py = offsetY + y * cellSize;
+                const tile = grassTiles[y][x];
+
+                // Apply shade variation to background color
+                const bg = level.bg;
+                const r = parseInt(bg.slice(1, 3), 16);
+                const g = parseInt(bg.slice(3, 5), 16);
+                const b = parseInt(bg.slice(5, 7), 16);
+                const sr = Math.max(0, Math.min(255, r + tile.shade));
+                const sg = Math.max(0, Math.min(255, g + tile.shade));
+                const sb = Math.max(0, Math.min(255, b + tile.shade));
+                ctx.fillStyle = `rgb(${sr},${sg},${sb})`;
+                ctx.fillRect(px, py, cellSize, cellSize);
+
+                if (tile.decoration) {
+                    ctx.font = Math.floor(cellSize * 0.3) + "px sans-serif";
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "middle";
+                    ctx.globalAlpha = 0.6;
+                    ctx.fillText(tile.decoration, px + cellSize / 2, py + cellSize / 2);
+                    ctx.globalAlpha = 1;
+                }
+            }
+        }
+
+        if (level.terrain) {
+            for (const feature of level.terrain) {
+                for (const cell of feature.cells) {
+                    const px = offsetX + cell.x * cellSize;
+                    const py = offsetY + cell.y * cellSize;
+
+                    switch (feature.type) {
+                        case "river":
+                            ctx.fillStyle = "rgba(30, 100, 180, 0.5)";
+                            ctx.fillRect(px, py, cellSize, cellSize);
+                            ctx.font = Math.floor(cellSize * 0.35) + "px sans-serif";
+                            ctx.textAlign = "center";
+                            ctx.textBaseline = "middle";
+                            ctx.globalAlpha = 0.5;
+                            ctx.fillText("🌊", px + cellSize / 2, py + cellSize / 2);
+                            ctx.globalAlpha = 1;
+                            break;
+                        case "bridge":
+                            ctx.fillStyle = "rgba(139, 90, 43, 0.6)";
+                            ctx.fillRect(px, py, cellSize, cellSize);
+                            ctx.font = Math.floor(cellSize * 0.35) + "px sans-serif";
+                            ctx.textAlign = "center";
+                            ctx.textBaseline = "middle";
+                            ctx.fillText("🌉", px + cellSize / 2, py + cellSize / 2);
+                            break;
+                        case "mountain":
+                            ctx.fillStyle = "rgba(100, 100, 110, 0.5)";
+                            ctx.fillRect(px, py, cellSize, cellSize);
+                            ctx.font = Math.floor(cellSize * 0.4) + "px sans-serif";
+                            ctx.textAlign = "center";
+                            ctx.textBaseline = "middle";
+                            ctx.fillText("⛰️", px + cellSize / 2, py + cellSize / 2);
+                            break;
+                        case "tree":
+                            ctx.font = Math.floor(cellSize * 0.45) + "px sans-serif";
+                            ctx.textAlign = "center";
+                            ctx.textBaseline = "middle";
+                            ctx.fillText("🌲", px + cellSize / 2, py + cellSize / 2);
+                            break;
+                        case "rock":
+                            ctx.font = Math.floor(cellSize * 0.4) + "px sans-serif";
+                            ctx.textAlign = "center";
+                            ctx.textBaseline = "middle";
+                            ctx.fillText("🪨", px + cellSize / 2, py + cellSize / 2);
+                            break;
+                    }
+                }
+            }
+        }
     }
 
     function drawGrid() {

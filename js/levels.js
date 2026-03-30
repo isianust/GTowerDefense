@@ -26,6 +26,10 @@ const LEVELS = [
             { enemies: [{ type: "goblin", count: 12, interval: 50 }] },
             { enemies: [{ type: "goblin", count: 10, interval: 45 }, { type: "orc", count: 3, interval: 90 }] },
         ],
+        terrain: [
+            { type: "tree", cells: [{x:2,y:1},{x:3,y:8},{x:8,y:0},{x:13,y:3},{x:17,y:8}] },
+            { type: "rock", cells: [{x:7,y:9},{x:16,y:1}] }
+        ],
         bg: "#1a3a1a"
     },
     // ---- Level 2: Forest Trail ----
@@ -96,6 +100,11 @@ const LEVELS = [
             { enemies: [{ type: "darkKnight", count: 5, interval: 80 }, { type: "orc", count: 10, interval: 45 }] },
             { enemies: [{ type: "goblin", count: 20, interval: 25 }, { type: "darkKnight", count: 4, interval: 90 }] },
         ],
+        terrain: [
+            { type: "river", cells: [{x:9,y:0},{x:9,y:1},{x:9,y:2},{x:9,y:3},{x:9,y:4},{x:9,y:5},{x:9,y:6},{x:9,y:7},{x:9,y:8},{x:9,y:10},{x:9,y:11}] },
+            { type: "bridge", cells: [{x:9,y:9}] },
+            { type: "tree", cells: [{x:4,y:0},{x:16,y:8}] }
+        ],
         bg: "#0f1f2f"
     },
     // ---- Level 5: Mountain Pass ----
@@ -119,6 +128,10 @@ const LEVELS = [
             { enemies: [{ type: "darkKnight", count: 6, interval: 70 }, { type: "goblin", count: 15, interval: 30 }] },
             { enemies: [{ type: "troll", count: 2, interval: 150 }, { type: "orc", count: 12, interval: 40 }] },
             { enemies: [{ type: "wolf", count: 15, interval: 30 }, { type: "troll", count: 3, interval: 120 }] },
+        ],
+        terrain: [
+            { type: "mountain", cells: [{x:0,y:0},{x:1,y:0},{x:0,y:1},{x:18,y:0},{x:19,y:0},{x:18,y:1},{x:19,y:1},{x:7,y:0},{x:8,y:0}] },
+            { type: "rock", cells: [{x:5,y:8},{x:6,y:9},{x:11,y:3}] }
         ],
         bg: "#1a1a2e"
     },
@@ -172,6 +185,10 @@ const LEVELS = [
             { enemies: [{ type: "wolf", count: 20, interval: 20 }, { type: "troll", count: 5, interval: 80 }] },
             { enemies: [{ type: "demon", count: 2, interval: 120 }, { type: "darkKnight", count: 10, interval: 40 }] },
         ],
+        terrain: [
+            { type: "mountain", cells: [{x:0,y:0},{x:1,y:0},{x:0,y:1},{x:19,y:0},{x:19,y:1},{x:10,y:0},{x:10,y:1}] },
+            { type: "rock", cells: [{x:5,y:5},{x:14,y:7},{x:3,y:10},{x:16,y:10}] }
+        ],
         bg: "#2a0f0f"
     },
     // ---- Level 8: Frozen Tundra ----
@@ -197,6 +214,10 @@ const LEVELS = [
             { enemies: [{ type: "demon", count: 3, interval: 100 }, { type: "troll", count: 5, interval: 70 }] },
             { enemies: [{ type: "darkKnight", count: 15, interval: 30 }, { type: "demon", count: 3, interval: 90 }] },
             { enemies: [{ type: "dragon", count: 1, interval: 300 }, { type: "troll", count: 5, interval: 60 }] },
+        ],
+        terrain: [
+            { type: "river", cells: [{x:3,y:0},{x:3,y:1},{x:3,y:2},{x:3,y:3},{x:3,y:4},{x:3,y:5},{x:3,y:6},{x:3,y:7},{x:3,y:8},{x:3,y:9},{x:3,y:10},{x:3,y:11}] },
+            { type: "mountain", cells: [{x:0,y:9},{x:1,y:9},{x:0,y:10},{x:0,y:11},{x:1,y:10},{x:1,y:11}] }
         ],
         bg: "#0f1a2a"
     },
