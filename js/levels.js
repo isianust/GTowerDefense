@@ -279,7 +279,7 @@ const LEVELS = [
             { enemies: [{ type: "dragon", count: 3, interval: 100 }, { type: "demon", count: 6, interval: 45 }, { type: "troll", count: 8, interval: 35 }] },
         ],
         bg: "#1a0505"
-    },,
+    },
     // ---- Level 11: Crystal Cave ----
     {
         name: "Crystal Cave",
