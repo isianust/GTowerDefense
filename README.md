@@ -1,7 +1,7 @@
 # ⚔️ Guardians of the Realm — Tower Defense
 
 A classic Tower Defense game built with HTML5 Canvas, CSS, and vanilla JavaScript.  
-Defend your base across **10 unique levels** by placing and upgrading towers to stop waves of enemies.
+Defend your base across **50 unique levels** by placing and upgrading towers to stop waves of enemies.
 
 ## 🎮 How to Play
 
@@ -34,7 +34,7 @@ Goblin → Orc → Wolf → Dark Knight → Troll → Demon → Dragon (Boss)
 ```
 index.html          — Main game page
 css/style.css       — Modern dark-theme styling
-js/levels.js        — 10 level definitions (paths, waves)
+js/levels.js        — 50 level definitions (paths, waves)
 js/towers.js        — Tower type definitions
 js/enemies.js       — Enemy type definitions
 js/game.js          — Core game engine (canvas, loop, logic)
