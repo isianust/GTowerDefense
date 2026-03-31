@@ -1,0 +1,108 @@
+/* ============================================
+   TOWER DEFINITIONS
+   ============================================ */
+
+const TOWER_TYPES = {
+    archer: {
+        name: "Archer",
+        icon: "🏹",
+        color: "#22c55e",
+        cost: 50,
+        range: 3,
+        damage: 8,
+        fireRate: 30,        // frames between shots
+        projectileSpeed: 6,
+        projectileColor: "#22c55e",
+        splash: 0,
+        slow: 0,
+        chain: 0,
+        description: "Fast attacks",
+        upgrades: [
+            { cost: 40,  damage: 12, range: 3.3, fireRate: 26 },
+            { cost: 80,  damage: 18, range: 3.6, fireRate: 22 },
+            { cost: 150, damage: 28, range: 4.0, fireRate: 18 },
+        ]
+    },
+    cannon: {
+        name: "Cannon",
+        icon: "💣",
+        color: "#ef4444",
+        cost: 75,
+        range: 2.5,
+        damage: 25,
+        fireRate: 70,
+        projectileSpeed: 4,
+        projectileColor: "#ef4444",
+        splash: 1.2,         // splash radius in cells
+        slow: 0,
+        chain: 0,
+        description: "Splash damage",
+        upgrades: [
+            { cost: 60,  damage: 35, range: 2.8, fireRate: 65, splash: 1.4 },
+            { cost: 120, damage: 50, range: 3.0, fireRate: 58, splash: 1.6 },
+            { cost: 200, damage: 75, range: 3.3, fireRate: 50, splash: 2.0 },
+        ]
+    },
+    ice: {
+        name: "Ice",
+        icon: "❄️",
+        color: "#38bdf8",
+        cost: 60,
+        range: 2.5,
+        damage: 5,
+        fireRate: 40,
+        projectileSpeed: 5,
+        projectileColor: "#38bdf8",
+        splash: 0,
+        slow: 0.4,           // slow factor (enemy speed *= 1 - slow)
+        slowDuration: 90,    // frames of slow
+        chain: 0,
+        description: "Slows enemies",
+        upgrades: [
+            { cost: 50,  damage: 8,  range: 2.8, slow: 0.5, slowDuration: 110 },
+            { cost: 100, damage: 12, range: 3.0, slow: 0.6, slowDuration: 130, fireRate: 35 },
+            { cost: 170, damage: 18, range: 3.3, slow: 0.7, slowDuration: 160, fireRate: 30 },
+        ]
+    },
+    lightning: {
+        name: "Lightning",
+        icon: "⚡",
+        color: "#a78bfa",
+        cost: 100,
+        range: 3,
+        damage: 12,
+        fireRate: 50,
+        projectileSpeed: 20,
+        projectileColor: "#a78bfa",
+        splash: 0,
+        slow: 0,
+        chain: 3,             // chain to N additional targets
+        chainRange: 2,
+        description: "Chain attack",
+        upgrades: [
+            { cost: 80,  damage: 18, chain: 4, chainRange: 2.2 },
+            { cost: 150, damage: 25, chain: 5, chainRange: 2.5, fireRate: 42 },
+            { cost: 250, damage: 35, chain: 6, chainRange: 3.0, fireRate: 35 },
+        ]
+    },
+    sniper: {
+        name: "Sniper",
+        icon: "🎯",
+        color: "#f59e0b",
+        cost: 120,
+        range: 5,
+        damage: 40,
+        fireRate: 90,
+        projectileSpeed: 15,
+        projectileColor: "#f59e0b",
+        splash: 0,
+        slow: 0,
+        chain: 0,
+        description: "Long range",
+        upgrades: [
+            { cost: 100, damage: 60,  range: 5.5, fireRate: 82 },
+            { cost: 180, damage: 90,  range: 6.0, fireRate: 72 },
+            { cost: 300, damage: 140, range: 7.0, fireRate: 60 },
+        ]
+    },
+};

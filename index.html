@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tower Defense — Guardians of the Realm</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏰</text></svg>">
+</head>
+<body>
+    <!-- Main Menu Screen -->
+    <div id="menu-screen" class="screen active">
+        <div class="menu-bg"></div>
+        <div class="menu-content">
+            <h1 class="game-title">⚔️ Guardians of the Realm ⚔️</h1>
+            <p class="game-subtitle">Tower Defense</p>
+            <button id="btn-play" class="menu-btn primary">▶ Play</button>
+            <button id="btn-how" class="menu-btn">📖 How to Play</button>
+            <button id="btn-lang" class="menu-btn lang-btn">🌐 繁體中文</button>
+        </div>
+    </div>
+
+    <!-- How to Play Screen -->
+    <div id="how-screen" class="screen">
+        <div class="panel how-panel">
+            <h2>📖 How to Play</h2>
+            <div class="how-content">
+                <div class="how-section">
+                    <h3>🎯 Objective</h3>
+                    <p>Defend your base by placing towers along the enemy path. Don't let enemies reach the end!</p>
+                </div>
+                <div class="how-section">
+                    <h3>🏗️ Towers</h3>
+                    <ul>
+                        <li><span class="tower-icon archer"></span> <strong>Archer Tower</strong> — Fast attacks, moderate damage</li>
+                        <li><span class="tower-icon cannon"></span> <strong>Cannon Tower</strong> — Slow but powerful splash damage</li>
+                        <li><span class="tower-icon ice"></span> <strong>Ice Tower</strong> — Slows enemies down</li>
+                        <li><span class="tower-icon lightning"></span> <strong>Lightning Tower</strong> — Chain lightning hits multiple enemies</li>
+                        <li><span class="tower-icon sniper"></span> <strong>Sniper Tower</strong> — Extreme range, high single-target damage</li>
+                    </ul>
+                </div>
+                <div class="how-section">
+                    <h3>🎮 Controls</h3>
+                    <ul>
+                        <li>Click a tower from the shop, then click an empty cell to place it</li>
+                        <li>Click an existing tower to upgrade or sell it</li>
+                        <li>Press <kbd>Start Wave</kbd> to begin each wave</li>
+                        <li>Press <kbd>⏩</kbd> to toggle fast-forward</li>
+                    </ul>
+                </div>
+            </div>
+            <button id="btn-how-back" class="menu-btn">← Back</button>
+        </div>
+    </div>
+
+    <!-- Level Select Screen -->
+    <div id="level-screen" class="screen">
+        <div class="panel level-panel">
+            <h2>🗺️ Select Level</h2>
+            <div id="level-grid" class="level-grid"></div>
+            <button id="btn-level-back" class="menu-btn">← Back</button>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen">
+        <!-- HUD -->
+        <div id="hud">
+            <div class="hud-left">
+                <span id="hud-level" class="hud-item">📍 Level 1</span>
+                <span id="hud-wave" class="hud-item">🌊 Wave 0/0</span>
+            </div>
+            <div class="hud-center">
+                <span id="hud-gold" class="hud-item gold">💰 100</span>
+                <span id="hud-lives" class="hud-item lives">❤️ 20</span>
+                <span id="hud-score" class="hud-item">⭐ 0</span>
+            </div>
+            <div class="hud-right">
+                <button id="btn-start-wave" class="hud-btn wave-btn">▶ Start Wave</button>
+                <button id="btn-fast" class="hud-btn">⏩</button>
+                <button id="btn-pause" class="hud-btn">⏸</button>
+                <button id="btn-quit" class="hud-btn quit-btn">✕</button>
+            </div>
+        </div>
+
+        <!-- Game Canvas -->
+        <canvas id="game-canvas"></canvas>
+
+        <!-- Tower Shop -->
+        <div id="tower-shop">
+            <h3>🏪 Towers</h3>
+            <div id="shop-items"></div>
+        </div>
+
+        <!-- Tower Info Panel (shown when tower selected) -->
+        <div id="tower-info" class="hidden">
+            <h3 id="info-name">Tower</h3>
+            <div id="info-stats"></div>
+            <div id="info-actions">
+                <button id="btn-upgrade" class="info-btn upgrade-btn">⬆ Upgrade</button>
+                <button id="btn-sell" class="info-btn sell-btn">💰 Sell</button>
+            </div>
+            <button id="btn-deselect" class="info-btn deselect-btn">✕ Close</button>
+        </div>
+    </div>
+
+    <!-- Victory / Defeat Overlay -->
+    <div id="overlay" class="overlay hidden">
+        <div class="overlay-content">
+            <h2 id="overlay-title"></h2>
+            <p id="overlay-message"></p>
+            <div id="overlay-stars" class="stars"></div>
+            <div class="overlay-buttons">
+                <button id="btn-retry" class="menu-btn">🔄 Retry</button>
+                <button id="btn-next" class="menu-btn primary">▶ Next Level</button>
+                <button id="btn-menu" class="menu-btn">🏠 Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/i18n.js"></script>
+    <script src="js/levels.js"></script>
+    <script src="js/towers.js"></script>
+    <script src="js/enemies.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/ui.js"></script>
+</body>
+</html>
