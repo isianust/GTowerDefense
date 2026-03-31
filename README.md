@@ -5,12 +5,13 @@
 ### Enterprise-Grade Tower Defense Game Engine
 
 [![HTML5](https://img.shields.io/badge/HTML5-Canvas-E34F26?logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)
-[![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![CSS3](https://img.shields.io/badge/CSS3-Modern-1572B6?logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-Build-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Tests](https://img.shields.io/badge/Tests-656%20passed-22c55e?logo=vitest&logoColor=white)](#-testing-framework--vitest)
 [![i18n](https://img.shields.io/badge/i18n-EN%20%7C%20繁中-4FC08D)](#-internationalization)
 [![Levels](https://img.shields.io/badge/Levels-50-blueviolet)](#-level-design)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Zero Dependencies](https://img.shields.io/badge/Dependencies-0-brightgreen)](#-tech-stack)
+[![CI](https://github.com/isianust/GTowerDefense/actions/workflows/ci.yml/badge.svg)](https://github.com/isianust/GTowerDefense/actions/workflows/ci.yml)
 
 **A high-performance, zero-dependency tower defense game engine built with vanilla HTML5 Canvas, CSS3, and JavaScript. Features 50 hand-crafted levels, 5 upgradable tower types, 10 enemy classes, bilingual UI (English / 繁體中文), and a modern glassmorphism dark-theme interface.**
 
@@ -42,20 +43,34 @@
 
 ## 🚀 Quick Start
 
+### Development Mode (Recommended)
+
 ```bash
 # Clone the repository
 git clone https://github.com/isianust/GTowerDefense.git
-
-# Navigate to the project
 cd GTowerDefense
 
-# Open in your browser — no build step required
-open index.html          # macOS
-xdg-open index.html      # Linux
-start index.html         # Windows
+# Install dependencies
+npm install
+
+# Start development server with hot reload
+npm run dev
 ```
 
-> **Zero dependencies.** No `npm install`, no bundling, no transpilation. Just open and play.
+### Available Scripts
+
+```bash
+npm run dev          # Start Vite dev server (http://localhost:3000)
+npm run build        # TypeScript compile + production build
+npm run preview      # Preview production build locally
+npm run test         # Run all 656 tests
+npm run test:watch   # Run tests in watch mode
+npm run test:coverage # Run tests with coverage report
+npm run lint         # ESLint check
+npm run typecheck    # TypeScript type checking
+npm run format       # Auto-format with Prettier
+npm run format:check # Check formatting
+```
 
 ---
 
@@ -334,12 +349,16 @@ requestAnimationFrame(loop)
 | Layer | Technology | Purpose |
 |-------|------------|---------|
 | **Rendering** | HTML5 Canvas 2D API | Game visuals, animations, particles |
-| **Logic** | Vanilla JavaScript (ES6+) | Game engine, state management |
+| **Logic** | TypeScript (Strict mode) | Type-safe game engine, state management |
+| **Build** | Vite | Fast dev server, optimized production builds |
 | **UI** | HTML5 + CSS3 | Menus, HUD, overlays, shop |
 | **Styling** | CSS3 (Gradients, Glassmorphism) | Modern dark-theme interface |
-| **i18n** | Custom JS module | English ↔ 繁體中文 |
+| **i18n** | Custom TS module | English ↔ 繁體中文 |
+| **Testing** | Vitest + jsdom | 656 unit tests, V8 coverage |
+| **Linting** | ESLint + Prettier | Code quality and formatting |
+| **CI/CD** | GitHub Actions | Automated lint, typecheck, test, build |
 | **Storage** | LocalStorage API | Language prefs, game progress |
-| **Deployment** | Static files | Zero-config, CDN-ready |
+| **Deployment** | Static files (Vite build) | Optimized, tree-shaken, CDN-ready |
 
 ---
 
@@ -347,20 +366,35 @@ requestAnimationFrame(loop)
 
 ```
 GTowerDefense/
-├── index.html              # Entry point — semantic HTML5, 6 game screens
+├── index.html                   # Entry point — semantic HTML5, Vite module loading
 ├── css/
-│   └── style.css           # 457 lines — dark theme, glassmorphism, animations
-├── js/
-│   ├── i18n.js             # 315 lines — bilingual string management (EN / 繁中)
-│   ├── levels.js           # 1,570 lines — 50 level definitions (paths, waves, terrain)
-│   ├── towers.js           # 108 lines — 5 tower types with 3 upgrade tiers each
-│   ├── enemies.js          # 100 lines — 10 enemy types (6 standard + 4 bosses)
-│   ├── game.js             # 913 lines — core engine (loop, physics, rendering)
-│   └── ui.js               # 330 lines — screen management, HUD, shop, overlays
-└── README.md               # This file
+│   └── style.css                # Dark theme, glassmorphism, animations
+├── src/                         # TypeScript source (ES Modules)
+│   ├── main.ts                  # Application entry point
+│   ├── types.ts                 # Shared type definitions
+│   ├── i18n.ts                  # Bilingual localization (EN / 繁中)
+│   ├── game.ts                  # Core game engine (loop, physics, rendering)
+│   ├── ui.ts                    # Screen management, HUD, shop, overlays
+│   ├── data/
+│   │   ├── towers.ts            # 5 tower types with 3 upgrade tiers each
+│   │   ├── enemies.ts           # 10 enemy types (6 standard + 4 bosses)
+│   │   └── levels.ts            # 50 level definitions (paths, waves, terrain)
+│   └── __tests__/
+│       ├── towers.test.ts       # Tower data validation (90 tests)
+│       ├── enemies.test.ts      # Enemy data validation (84 tests)
+│       ├── levels.test.ts       # Level structure validation (455 tests)
+│       ├── i18n.test.ts         # Localization coverage (17 tests)
+│       └── types.test.ts        # Type definition tests (10 tests)
+├── js/                          # Original vanilla JS (preserved for reference)
+├── .github/workflows/ci.yml    # CI/CD pipeline
+├── package.json                 # npm config with scripts
+├── tsconfig.json                # TypeScript strict config
+├── vite.config.ts               # Vite build config
+├── vitest.config.ts             # Test runner config
+├── eslint.config.mjs            # ESLint config
+├── .prettierrc                  # Prettier config
+└── README.md                    # This file
 ```
-
-**Total: ~3,800 lines of code | 9 files | 0 dependencies**
 
 ---
 
@@ -381,11 +415,11 @@ Language preference is persisted in LocalStorage and can be toggled from the mai
 
 ### Phase 1 — Foundation & Quality (Weeks 1–3)
 
-- [ ] **Modular Build System** — Migrate to ES Modules with Vite bundler
-- [ ] **TypeScript Migration** — Add type safety to all game modules
-- [ ] **Testing Framework** — Add Vitest for unit/integration tests (target: 80% coverage)
-- [ ] **CI/CD Pipeline** — GitHub Actions for linting, testing, building, and deployment
-- [ ] **Code Quality** — ESLint + Prettier for consistent code standards
+- [x] **Modular Build System** — Migrate to ES Modules with Vite bundler
+- [x] **TypeScript Migration** — Add type safety to all game modules
+- [x] **Testing Framework** — Add Vitest for unit/integration tests (656 tests, data modules at 100% coverage)
+- [x] **CI/CD Pipeline** — GitHub Actions for linting, testing, building, and deployment
+- [x] **Code Quality** — ESLint + Prettier for consistent code standards
 - [ ] **Asset Pipeline** — Replace emoji icons with custom SVG/sprite sheet assets
 
 ### Phase 2 — Core Engine Upgrades (Weeks 4–8)
