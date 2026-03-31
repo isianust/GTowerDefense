@@ -7,7 +7,7 @@
 [![HTML5](https://img.shields.io/badge/HTML5-Canvas-E34F26?logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-Build-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
-[![Tests](https://img.shields.io/badge/Tests-656%20passed-22c55e?logo=vitest&logoColor=white)](#-testing-framework--vitest)
+[![Tests](https://img.shields.io/badge/Tests-841%20passed-22c55e?logo=vitest&logoColor=white)](#-testing-framework--vitest)
 [![i18n](https://img.shields.io/badge/i18n-EN%20%7C%20繁中-4FC08D)](#-internationalization)
 [![Levels](https://img.shields.io/badge/Levels-50-blueviolet)](#-level-design)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -379,12 +379,25 @@ GTowerDefense/
 │   │   ├── towers.ts            # 5 tower types with 3 upgrade tiers each
 │   │   ├── enemies.ts           # 10 enemy types (6 standard + 4 bosses)
 │   │   └── levels.ts            # 50 level definitions (paths, waves, terrain)
+│   ├── engine/                  # Core engine modules (Phase 2 & 3)
+│   │   ├── pathfinding.ts       # A* pathfinding algorithm (34 tests)
+│   │   ├── quadtree.ts          # Quadtree spatial indexing (29 tests)
+│   │   ├── saveload.ts          # Save/load system with storage abstraction (22 tests)
+│   │   ├── audio.ts             # Audio manager with Web Audio API (26 tests)
+│   │   ├── achievements.ts      # 52 achievements with persistent tracking (39 tests)
+│   │   └── abilities.ts         # Special abilities: meteor, freeze, gold rush (35 tests)
 │   └── __tests__/
 │       ├── towers.test.ts       # Tower data validation (90 tests)
 │       ├── enemies.test.ts      # Enemy data validation (84 tests)
 │       ├── levels.test.ts       # Level structure validation (455 tests)
 │       ├── i18n.test.ts         # Localization coverage (17 tests)
-│       └── types.test.ts        # Type definition tests (10 tests)
+│       ├── types.test.ts        # Type definition tests (10 tests)
+│       ├── pathfinding.test.ts  # A* pathfinding tests (34 tests)
+│       ├── quadtree.test.ts     # Quadtree spatial tests (29 tests)
+│       ├── saveload.test.ts     # Save/load persistence tests (22 tests)
+│       ├── audio.test.ts        # Audio system tests (26 tests)
+│       ├── achievements.test.ts # Achievement system tests (39 tests)
+│       └── abilities.test.ts    # Special abilities tests (35 tests)
 ├── js/                          # Original vanilla JS (preserved for reference)
 ├── .github/workflows/ci.yml    # CI/CD pipeline
 ├── package.json                 # npm config with scripts
@@ -417,7 +430,7 @@ Language preference is persisted in LocalStorage and can be toggled from the mai
 
 - [x] **Modular Build System** — Migrate to ES Modules with Vite bundler
 - [x] **TypeScript Migration** — Add type safety to all game modules
-- [x] **Testing Framework** — Add Vitest for unit/integration tests (656 tests, data modules at 100% coverage)
+- [x] **Testing Framework** — Add Vitest for unit/integration tests (841 tests, data modules at 100% coverage)
 - [x] **CI/CD Pipeline** — GitHub Actions for linting, testing, building, and deployment
 - [x] **Code Quality** — ESLint + Prettier for consistent code standards
 - [ ] **Asset Pipeline** — Replace emoji icons with custom SVG/sprite sheet assets
@@ -425,11 +438,11 @@ Language preference is persisted in LocalStorage and can be toggled from the mai
 ### Phase 2 — Core Engine Upgrades (Weeks 4–8)
 
 - [ ] **Entity-Component System (ECS)** — Refactor to data-oriented architecture
-- [ ] **Pathfinding Engine** — A* algorithm for dynamic path calculation
-- [ ] **Spatial Indexing** — Quadtree for efficient collision detection at scale
-- [ ] **Audio System** — Web Audio API for sound effects and background music
+- [x] **Pathfinding Engine** — A* algorithm for dynamic path calculation (34 tests)
+- [x] **Spatial Indexing** — Quadtree for efficient collision detection at scale (29 tests)
+- [x] **Audio System** — Web Audio API for sound effects and background music (26 tests)
 - [ ] **Particle Engine** — GPU-accelerated particle system via WebGL or OffscreenCanvas
-- [ ] **Save/Load System** — Full game state serialization with IndexedDB
+- [x] **Save/Load System** — Full game state serialization with storage abstraction (22 tests)
 
 ### Phase 3 — Content Expansion (Weeks 9–14)
 
@@ -437,9 +450,9 @@ Language preference is persisted in LocalStorage and can be toggled from the mai
 - [ ] **10 New Tower Types** — Elemental, support, and hybrid towers
 - [ ] **15 New Enemy Types** — Flying, burrowing, shielded, and minion-spawning enemies
 - [ ] **Hero System** — Controllable hero units with abilities and skill trees
-- [ ] **Special Abilities** — Meteor strike, freeze blast, gold rush power-ups
+- [x] **Special Abilities** — Meteor strike, freeze blast, gold rush power-ups (35 tests)
 - [ ] **Boss Mechanics** — Multi-phase boss fights with unique attack patterns
-- [ ] **Achievement System** — 50+ achievements with persistent unlock tracking
+- [x] **Achievement System** — 52 achievements with persistent unlock tracking (39 tests)
 
 ### Phase 4 — Multiplayer & Social (Weeks 15–20)
 
