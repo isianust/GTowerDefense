@@ -1,14 +1,32 @@
 import { describe, it, expect } from "vitest";
 import { TOWER_TYPES } from "../data/towers";
 
+const ORIGINAL_TOWERS = ["archer", "cannon", "ice", "lightning", "sniper"];
+const PHASE3_TOWERS = [
+  "flame", "mortar", "poison", "tesla", "laser",
+  "catapult", "frost", "venom", "ballista", "railgun",
+];
+const ALL_TOWERS = [...ORIGINAL_TOWERS, ...PHASE3_TOWERS];
+
 describe("Tower Definitions", () => {
-  it("should have exactly 5 tower types", () => {
-    expect(Object.keys(TOWER_TYPES)).toHaveLength(5);
+  it("should have exactly 15 tower types", () => {
+    expect(Object.keys(TOWER_TYPES)).toHaveLength(15);
   });
 
-  it("should contain all expected tower types", () => {
-    const expected = ["archer", "cannon", "ice", "lightning", "sniper"];
-    expect(Object.keys(TOWER_TYPES)).toEqual(expected);
+  it("should contain all original 5 tower types", () => {
+    for (const key of ORIGINAL_TOWERS) {
+      expect(Object.keys(TOWER_TYPES)).toContain(key);
+    }
+  });
+
+  it("should contain all 10 Phase 3 tower types", () => {
+    for (const key of PHASE3_TOWERS) {
+      expect(Object.keys(TOWER_TYPES)).toContain(key);
+    }
+  });
+
+  it("should contain all 15 expected towers", () => {
+    expect(Object.keys(TOWER_TYPES)).toEqual(ALL_TOWERS);
   });
 
   describe.each(Object.entries(TOWER_TYPES))("Tower: %s", (key, tower) => {
@@ -82,7 +100,7 @@ describe("Tower Definitions", () => {
     });
   });
 
-  describe("Tower Specialties", () => {
+  describe("Tower Specialties (Original 5)", () => {
     it("archer should have no splash, slow, or chain", () => {
       expect(TOWER_TYPES.archer.splash).toBe(0);
       expect(TOWER_TYPES.archer.slow).toBe(0);
@@ -102,21 +120,82 @@ describe("Tower Definitions", () => {
       expect(TOWER_TYPES.lightning.chain).toBeGreaterThan(0);
       expect(TOWER_TYPES.lightning.chainRange).toBeGreaterThan(0);
     });
+  });
 
-    it("sniper should have the highest range", () => {
-      const sniperRange = TOWER_TYPES.sniper.range;
+  describe("Tower Specialties (Phase 3)", () => {
+    it("flame should have both splash and slow (burn)", () => {
+      expect(TOWER_TYPES.flame.splash).toBeGreaterThan(0);
+      expect(TOWER_TYPES.flame.slow).toBeGreaterThan(0);
+    });
+
+    it("mortar should have the largest splash radius", () => {
+      const mortarSplash = TOWER_TYPES.mortar.splash;
       for (const [key, tower] of Object.entries(TOWER_TYPES)) {
-        if (key !== "sniper") {
-          expect(sniperRange).toBeGreaterThan(tower.range);
+        if (key !== "mortar") {
+          expect(mortarSplash).toBeGreaterThanOrEqual(tower.splash);
         }
       }
     });
 
-    it("sniper should have the highest base damage", () => {
-      const sniperDamage = TOWER_TYPES.sniper.damage;
+    it("poison should have slow effect with long duration", () => {
+      expect(TOWER_TYPES.poison.slow).toBeGreaterThan(0);
+      expect(TOWER_TYPES.poison.slowDuration).toBeGreaterThan(150);
+    });
+
+    it("tesla should have chain + splash", () => {
+      expect(TOWER_TYPES.tesla.chain).toBeGreaterThan(0);
+      expect(TOWER_TYPES.tesla.splash).toBeGreaterThan(0);
+    });
+
+    it("laser should have the fastest fire rate", () => {
+      const laserRate = TOWER_TYPES.laser.fireRate;
       for (const [key, tower] of Object.entries(TOWER_TYPES)) {
-        if (key !== "sniper") {
-          expect(sniperDamage).toBeGreaterThan(tower.damage);
+        if (key !== "laser") {
+          expect(laserRate).toBeLessThanOrEqual(tower.fireRate);
+        }
+      }
+    });
+
+    it("catapult should have very high damage", () => {
+      expect(TOWER_TYPES.catapult.damage).toBeGreaterThan(TOWER_TYPES.sniper.damage);
+    });
+
+    it("frost should have splash and heavy slow", () => {
+      expect(TOWER_TYPES.frost.splash).toBeGreaterThan(0);
+      expect(TOWER_TYPES.frost.slow).toBeGreaterThanOrEqual(0.7);
+    });
+
+    it("venom should have long slow duration", () => {
+      expect(TOWER_TYPES.venom.slowDuration).toBeGreaterThan(150);
+    });
+
+    it("ballista should have longer range than sniper", () => {
+      expect(TOWER_TYPES.ballista.range).toBeGreaterThan(TOWER_TYPES.sniper.range);
+    });
+
+    it("railgun should be the most expensive tower", () => {
+      const railgunCost = TOWER_TYPES.railgun.cost;
+      for (const [key, tower] of Object.entries(TOWER_TYPES)) {
+        if (key !== "railgun") {
+          expect(railgunCost).toBeGreaterThanOrEqual(tower.cost);
+        }
+      }
+    });
+
+    it("railgun should have the highest range", () => {
+      const railgunRange = TOWER_TYPES.railgun.range;
+      for (const [key, tower] of Object.entries(TOWER_TYPES)) {
+        if (key !== "railgun") {
+          expect(railgunRange).toBeGreaterThanOrEqual(tower.range);
+        }
+      }
+    });
+
+    it("railgun should have the highest base damage", () => {
+      const railgunDmg = TOWER_TYPES.railgun.damage;
+      for (const [key, tower] of Object.entries(TOWER_TYPES)) {
+        if (key !== "railgun") {
+          expect(railgunDmg).toBeGreaterThanOrEqual(tower.damage);
         }
       }
     });
@@ -128,15 +207,6 @@ describe("Tower Definitions", () => {
       for (const [key, tower] of Object.entries(TOWER_TYPES)) {
         if (key !== "archer") {
           expect(archerCost).toBeLessThanOrEqual(tower.cost);
-        }
-      }
-    });
-
-    it("sniper should be the most expensive tower", () => {
-      const sniperCost = TOWER_TYPES.sniper.cost;
-      for (const [key, tower] of Object.entries(TOWER_TYPES)) {
-        if (key !== "sniper") {
-          expect(sniperCost).toBeGreaterThanOrEqual(tower.cost);
         }
       }
     });

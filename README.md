@@ -7,7 +7,7 @@
 [![HTML5](https://img.shields.io/badge/HTML5-Canvas-E34F26?logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-Build-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
-[![Tests](https://img.shields.io/badge/Tests-1069%20passed-22c55e?logo=vitest&logoColor=white)](#-testing-framework--vitest)
+[![Tests](https://img.shields.io/badge/Tests-1534%20passed-22c55e?logo=vitest&logoColor=white)](#-testing-framework--vitest)
 [![i18n](https://img.shields.io/badge/i18n-EN%20%7C%20繁中-4FC08D)](#-internationalization)
 [![Levels](https://img.shields.io/badge/Levels-50-blueviolet)](#-level-design)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -379,7 +379,7 @@ GTowerDefense/
 │   │   ├── towers.ts            # 5 tower types with 3 upgrade tiers each
 │   │   ├── enemies.ts           # 10 enemy types (6 standard + 4 bosses)
 │   │   └── levels.ts            # 50 level definitions (paths, waves, terrain)
-│   ├── engine/                  # Core engine modules (Phase 2 & 3)
+│   ├── engine/                  # Core engine modules (Phase 2, 3 & 4)
 │   │   ├── pathfinding.ts       # A* pathfinding algorithm (34 tests)
 │   │   ├── quadtree.ts          # Quadtree spatial indexing (29 tests)
 │   │   ├── saveload.ts          # Save/load system with storage abstraction (22 tests)
@@ -390,10 +390,13 @@ GTowerDefense/
 │   │   ├── combat.ts            # Combat engine: damage, targeting, chain (59 tests)
 │   │   ├── wavemanager.ts       # Wave spawning & scheduling system (35 tests)
 │   │   ├── boss.ts              # Multi-phase boss fight mechanics (60 tests)
-│   │   └── levelgen.ts          # Procedural level generation (39 tests)
+│   │   ├── levelgen.ts          # Procedural level generation (39 tests)
+│   │   ├── hero.ts              # Hero system: 4 classes, skills, level-up (hero tests)
+│   │   ├── replay.ts            # Replay recording & playback system (46 tests)
+│   │   └── ecs.ts               # Entity-Component System (47 tests)
 │   └── __tests__/
-│       ├── towers.test.ts       # Tower data validation (90 tests)
-│       ├── enemies.test.ts      # Enemy data validation (84 tests)
+│       ├── towers.test.ts       # Tower data validation (261 tests — 15 types)
+│       ├── enemies.test.ts      # Enemy data validation (200 tests — 25 types)
 │       ├── levels.test.ts       # Level structure validation (455 tests)
 │       ├── i18n.test.ts         # Localization coverage (17 tests)
 │       ├── types.test.ts        # Type definition tests (10 tests)
@@ -407,7 +410,10 @@ GTowerDefense/
 │       ├── combat.test.ts       # Combat engine tests (59 tests)
 │       ├── wavemanager.test.ts  # Wave manager tests (35 tests)
 │       ├── boss.test.ts         # Boss mechanics tests (60 tests)
-│       └── levelgen.test.ts     # Level generation tests (39 tests)
+│       ├── levelgen.test.ts     # Level generation tests (39 tests)
+│       ├── hero.test.ts         # Hero system tests (hero tests)
+│       ├── replay.test.ts       # Replay system tests (46 tests)
+│       └── ecs.test.ts          # ECS tests (47 tests)
 ├── js/                          # Original vanilla JS (preserved for reference)
 ├── .github/workflows/ci.yml    # CI/CD pipeline
 ├── package.json                 # npm config with scripts
@@ -440,14 +446,14 @@ Language preference is persisted in LocalStorage and can be toggled from the mai
 
 - [x] **Modular Build System** — Migrate to ES Modules with Vite bundler
 - [x] **TypeScript Migration** — Add type safety to all game modules
-- [x] **Testing Framework** — Add Vitest for unit/integration tests (1069 tests, data modules at 100% coverage)
+- [x] **Testing Framework** — Add Vitest for unit/integration tests (1534 tests, data modules at 100% coverage)
 - [x] **CI/CD Pipeline** — GitHub Actions for linting, testing, building, and deployment
 - [x] **Code Quality** — ESLint + Prettier for consistent code standards
 - [ ] **Asset Pipeline** — Replace emoji icons with custom SVG/sprite sheet assets
 
 ### Phase 2 — Core Engine Upgrades (Weeks 4–8)
 
-- [ ] **Entity-Component System (ECS)** — Refactor to data-oriented architecture
+- [x] **Entity-Component System (ECS)** — Full ECS with World, Components, Systems, Tags (47 tests)
 - [x] **Pathfinding Engine** — A* algorithm for dynamic path calculation (34 tests)
 - [x] **Spatial Indexing** — Quadtree for efficient collision detection at scale (29 tests)
 - [x] **Audio System** — Web Audio API for sound effects and background music (26 tests)
@@ -457,9 +463,9 @@ Language preference is persisted in LocalStorage and can be toggled from the mai
 ### Phase 3 — Content Expansion (Weeks 9–14)
 
 - [x] **Level Generator** — Procedural level generation with seeded RNG (39 tests)
-- [ ] **10 New Tower Types** — Elemental, support, and hybrid towers
-- [ ] **15 New Enemy Types** — Flying, burrowing, shielded, and minion-spawning enemies
-- [ ] **Hero System** — Controllable hero units with abilities and skill trees
+- [x] **10 New Tower Types** — Flame, Mortar, Poison, Tesla, Laser, Catapult, Frost, Venom, Ballista, Rail Gun (261 total tower tests)
+- [x] **15 New Enemy Types** — 10 standard (Skeleton, Harpy, Golem…) + 5 bosses (Hydra, Demon Lord, Shadow, Colossus, Overlord) (200 total enemy tests)
+- [x] **Hero System** — 4 hero classes (Warrior/Mage/Ranger/Paladin) with skills, level-up, energy
 - [x] **Special Abilities** — Meteor strike, freeze blast, gold rush power-ups (35 tests)
 - [x] **Boss Mechanics** — Multi-phase boss fights with unique attack patterns (60 tests)
 - [x] **Achievement System** — 52 achievements with persistent unlock tracking (39 tests)
@@ -468,10 +474,10 @@ Language preference is persisted in LocalStorage and can be toggled from the mai
 
 ### Phase 4 — Multiplayer & Social (Weeks 15–20)
 
+- [x] **Replay System** — Full game recording, serialization, and playback engine (46 tests)
 - [ ] **Leaderboard System** — Global and friends leaderboards via backend API
 - [ ] **Co-op Mode** — 2-player cooperative defense via WebSocket/WebRTC
 - [ ] **PvP Mode** — Send custom waves against opponents
-- [ ] **Replay System** — Record and share gameplay replays
 - [ ] **Community Levels** — Level editor with sharing and rating system
 
 ### Phase 5 — Platform & Distribution (Weeks 21–26)
