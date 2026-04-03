@@ -272,6 +272,7 @@ class MainScene extends Phaser.Scene {
       0.08
     );
     rangeCircle.setStrokeStyle(1, 0x4488ff, 0.3);
+    // 儲存範圍圈參考；移除塔時需一併銷毀 rangeCircle（見 _removeTower）
     tower.setData("rangeCircle", rangeCircle);
   }
 
@@ -364,7 +365,7 @@ class MainScene extends Phaser.Scene {
       const pathTween = enemy.getData("pathTween");
       if (pathTween) pathTween.stop();
 
-      // 移除攻擊範圍圈相關的 tween（如果有的話）
+      // 移除敵人
       this.enemies.remove(enemy, true, true);
     }
   }

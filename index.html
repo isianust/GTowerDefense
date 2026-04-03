@@ -130,16 +130,16 @@
        點擊 Play 按鈕 → 隱藏 HTML 選單 → 啟動 Phaser 遊戲
        ============================================ */
     document.addEventListener("DOMContentLoaded", function () {
-      var playBtn = document.getElementById("btn-play");
-      var menuScreen = document.getElementById("menu-screen");
-      var howScreen = document.getElementById("how-screen");
-      var levelScreen = document.getElementById("level-screen");
-      var gameScreen = document.getElementById("game-screen");
-      var btnHow = document.getElementById("btn-how");
-      var btnHowBack = document.getElementById("btn-how-back");
-      var btnLang = document.getElementById("btn-lang");
-      var btnQuit = document.getElementById("btn-quit");
-      var gameInstance = null;
+      const playBtn = document.getElementById("btn-play");
+      const menuScreen = document.getElementById("menu-screen");
+      const howScreen = document.getElementById("how-screen");
+      const levelScreen = document.getElementById("level-screen");
+      const gameScreen = document.getElementById("game-screen");
+      const btnHow = document.getElementById("btn-how");
+      const btnHowBack = document.getElementById("btn-how-back");
+      const btnLang = document.getElementById("btn-lang");
+      const btnQuit = document.getElementById("btn-quit");
+      let gameInstance = null;
 
       // Play 按鈕 → 隱藏選單，顯示遊戲畫面，啟動 Phaser
       if (playBtn) {
@@ -188,7 +188,7 @@
       // 語言切換按鈕
       if (btnLang) {
         btnLang.addEventListener("click", function () {
-          var current = btnLang.textContent;
+          const current = btnLang.textContent;
           if (current.indexOf("中文") !== -1) {
             btnLang.textContent = "🌐 English";
             document.querySelector(".game-title").textContent = "⚔️ 守護者之境 ⚔️";
