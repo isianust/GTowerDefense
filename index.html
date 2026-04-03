@@ -6,6 +6,8 @@
     <title>Tower Defense — Guardians of the Realm</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏰</text></svg>">
+    <!-- Phaser 3 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.87.0/dist/phaser.min.js"></script>
 </head>
 <body>
     <!-- Main Menu Screen -->
@@ -83,8 +85,11 @@
             </div>
         </div>
 
-        <!-- Game Canvas -->
-        <canvas id="game-canvas"></canvas>
+        <!-- Phaser Game Container -->
+        <div id="game-container"></div>
+
+        <!-- Legacy Canvas (hidden, kept for compatibility) -->
+        <canvas id="game-canvas" style="display:none"></canvas>
 
         <!-- Tower Shop -->
         <div id="tower-shop">
@@ -118,6 +123,107 @@
         </div>
     </div>
 
-    <script type="module" src="/src/main.ts"></script>
+    <script src="js/game.js"></script>
+    <script>
+    /* ============================================
+       UI ↔ Phaser 橋接
+       點擊 Play 按鈕 → 隱藏 HTML 選單 → 啟動 Phaser 遊戲
+       ============================================ */
+    document.addEventListener("DOMContentLoaded", function () {
+      const playBtn = document.getElementById("btn-play");
+      const menuScreen = document.getElementById("menu-screen");
+      const howScreen = document.getElementById("how-screen");
+      const levelScreen = document.getElementById("level-screen");
+      const gameScreen = document.getElementById("game-screen");
+      const btnHow = document.getElementById("btn-how");
+      const btnHowBack = document.getElementById("btn-how-back");
+      const btnLang = document.getElementById("btn-lang");
+      const btnQuit = document.getElementById("btn-quit");
+      let gameInstance = null;
+
+      // Play 按鈕 → 隱藏選單，顯示遊戲畫面，啟動 Phaser
+      if (playBtn) {
+        playBtn.addEventListener("click", function () {
+          // 隱藏所有選單
+          if (menuScreen) menuScreen.style.display = "none";
+          if (howScreen) howScreen.style.display = "none";
+          if (levelScreen) levelScreen.style.display = "none";
+          // 顯示遊戲畫面
+          if (gameScreen) {
+            gameScreen.classList.add("active");
+            gameScreen.style.display = "flex";
+          }
+          // 啟動 Phaser 遊戲（只建立一次）
+          if (!gameInstance) {
+            gameInstance = startGame();
+          }
+        });
+      }
+
+      // How to Play 按鈕
+      if (btnHow) {
+        btnHow.addEventListener("click", function () {
+          if (menuScreen) menuScreen.style.display = "none";
+          if (howScreen) {
+            howScreen.classList.add("active");
+            howScreen.style.display = "flex";
+          }
+        });
+      }
+
+      // How to Play 返回按鈕
+      if (btnHowBack) {
+        btnHowBack.addEventListener("click", function () {
+          if (howScreen) {
+            howScreen.classList.remove("active");
+            howScreen.style.display = "none";
+          }
+          if (menuScreen) {
+            menuScreen.classList.add("active");
+            menuScreen.style.display = "flex";
+          }
+        });
+      }
+
+      // 語言切換按鈕
+      if (btnLang) {
+        btnLang.addEventListener("click", function () {
+          const current = btnLang.textContent;
+          if (current.indexOf("中文") !== -1) {
+            btnLang.textContent = "🌐 English";
+            document.querySelector(".game-title").textContent = "⚔️ 守護者之境 ⚔️";
+            document.querySelector(".game-subtitle").textContent = "塔防遊戲";
+            playBtn.textContent = "▶ 開始遊戲";
+            btnHow.textContent = "📖 遊戲說明";
+          } else {
+            btnLang.textContent = "🌐 繁體中文";
+            document.querySelector(".game-title").textContent = "⚔️ Guardians of the Realm ⚔️";
+            document.querySelector(".game-subtitle").textContent = "Tower Defense";
+            playBtn.textContent = "▶ Play";
+            btnHow.textContent = "📖 How to Play";
+          }
+        });
+      }
+
+      // 退出遊戲 → 回到主選單
+      if (btnQuit) {
+        btnQuit.addEventListener("click", function () {
+          if (gameScreen) {
+            gameScreen.classList.remove("active");
+            gameScreen.style.display = "none";
+          }
+          // 銷毀 Phaser 實體以重新開始
+          if (gameInstance) {
+            gameInstance.destroy(true);
+            gameInstance = null;
+          }
+          if (menuScreen) {
+            menuScreen.classList.add("active");
+            menuScreen.style.display = "flex";
+          }
+        });
+      }
+    });
+    </script>
 </body>
 </html>
