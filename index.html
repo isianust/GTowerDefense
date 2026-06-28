@@ -1,228 +1,222 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tower Defense — Guardians of the Realm</title>
+    <title>三國塔防 — 烽火連城</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏰</text></svg>">
-    <!-- Phaser 3 CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/phaser@3.87.0/dist/phaser.min.js"></script>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏯</text></svg>">
 </head>
 <body>
-    <!-- Main Menu Screen -->
+    <!-- 主選單 -->
     <div id="menu-screen" class="screen active">
         <div class="menu-bg"></div>
         <div class="menu-content">
-            <h1 class="game-title">⚔️ Guardians of the Realm ⚔️</h1>
-            <p class="game-subtitle">Tower Defense</p>
-            <button id="btn-play" class="menu-btn primary">▶ Play</button>
-            <button id="btn-how" class="menu-btn">📖 How to Play</button>
-            <button id="btn-lang" class="menu-btn lang-btn">🌐 繁體中文</button>
+            <h1 class="game-title">🏯 三國塔防 · 烽火連城 🏯</h1>
+            <p class="game-subtitle">五十關 · 群雄逐鹿 · 武將守城</p>
+            <button id="btn-play" class="menu-btn primary">▶ 開始遊戲</button>
+            <button id="btn-how" class="menu-btn">📖 遊戲說明</button>
+            <button id="btn-codex" class="menu-btn">📜 BOSS／技能圖鑑</button>
         </div>
     </div>
 
-    <!-- How to Play Screen -->
+    <!-- 遊戲說明 -->
     <div id="how-screen" class="screen">
         <div class="panel how-panel">
-            <h2>📖 How to Play</h2>
+            <h2>📖 遊戲說明</h2>
             <div class="how-content">
                 <div class="how-section">
-                    <h3>🎯 Objective</h3>
-                    <p>Defend your base by placing towers along the enemy path. Don't let enemies reach the end!</p>
+                    <h3>🎯 目標</h3>
+                    <p>在敵人行軍路徑旁佈署武將塔，殲滅來犯的黃巾、群雄與武將，別讓敵軍攻入你的基地！每關最終會有大／中／小 BOSS 來襲。</p>
                 </div>
                 <div class="how-section">
-                    <h3>🏗️ Towers</h3>
+                    <h3>🏗️ 武將塔（共 15 種）</h3>
+                    <p>從下方商店選一座塔，再點擊空地佈署。點擊已建的塔可升級或賣出。完整數據見「技能表」。</p>
+                </div>
+                <div class="how-section">
+                    <h3>⚔️ 六大絕招（熱鍵 U I O J K L）</h3>
                     <ul>
-                        <li><span class="tower-icon archer"></span> <strong>Archer Tower</strong> — Fast attacks, moderate damage</li>
-                        <li><span class="tower-icon cannon"></span> <strong>Cannon Tower</strong> — Slow but powerful splash damage</li>
-                        <li><span class="tower-icon ice"></span> <strong>Ice Tower</strong> — Slows enemies down</li>
-                        <li><span class="tower-icon lightning"></span> <strong>Lightning Tower</strong> — Chain lightning hits multiple enemies</li>
-                        <li><span class="tower-icon sniper"></span> <strong>Sniper Tower</strong> — Extreme range, high single-target damage</li>
+                        <li><b>U</b> 火燒連環 — 沿路徑燒傷全體</li>
+                        <li><b>I</b> 萬箭齊發 — 全螢幕高傷</li>
+                        <li><b>O</b> 八卦鎖陣 — 定身＋<b>打斷 BOSS 詠唱</b></li>
+                        <li><b>J</b> 青囊療傷 — 回復基地生命</li>
+                        <li><b>K</b> 雷引天罰 — 連鎖落雷</li>
+                        <li><b>L</b> 無雙·斬將 — 對全場 BOSS 斬殺</li>
                     </ul>
                 </div>
                 <div class="how-section">
-                    <h3>🎮 Controls</h3>
-                    <ul>
-                        <li>Click a tower from the shop, then click an empty cell to place it</li>
-                        <li>Click an existing tower to upgrade or sell it</li>
-                        <li>Press <kbd>Start Wave</kbd> to begin each wave</li>
-                        <li>Press <kbd>⏩</kbd> to toggle fast-forward</li>
-                    </ul>
+                    <h3>👑 BOSS 詠唱</h3>
+                    <p>BOSS 會詠唱招牌技，畫面<strong>上方中央</strong>會顯示詠唱條與招式名稱。趁牠詠唱時用 <b>O 八卦鎖陣</b> 可打斷！</p>
                 </div>
             </div>
-            <button id="btn-how-back" class="menu-btn">← Back</button>
+            <button id="btn-how-back" class="menu-btn">← 返回</button>
         </div>
     </div>
 
-    <!-- Level Select Screen -->
+    <!-- 圖鑑（主選單版） -->
+    <div id="codex-screen" class="screen">
+        <div class="panel codex-panel">
+            <h2>📜 圖鑑</h2>
+            <div class="codex-tabs">
+                <button class="codex-tab active" data-tab="td-table-boss">BOSS 表（50 關）</button>
+                <button class="codex-tab" data-tab="td-table-skill">技能表（武將塔）</button>
+                <button class="codex-tab" data-tab="td-table-ult">絕招表（六大絕）</button>
+            </div>
+            <div class="codex-body">
+                <div id="td-table-boss" class="codex-table"></div>
+                <div id="td-table-skill" class="codex-table hidden"></div>
+                <div id="td-table-ult" class="codex-table hidden"></div>
+            </div>
+            <button id="btn-codex-back" class="menu-btn">← 返回</button>
+        </div>
+    </div>
+
+    <!-- 選關 -->
     <div id="level-screen" class="screen">
         <div class="panel level-panel">
-            <h2>🗺️ Select Level</h2>
-            <div id="level-grid" class="level-grid"></div>
-            <button id="btn-level-back" class="menu-btn">← Back</button>
+            <h2>🗺️ 選擇關卡</h2>
+            <div id="td-level-grid" class="td-level-grid"></div>
+            <button id="btn-level-back" class="menu-btn">← 返回</button>
         </div>
     </div>
 
-    <!-- Game Screen -->
+    <!-- 遊戲畫面 -->
     <div id="game-screen" class="screen">
         <!-- HUD -->
         <div id="hud">
             <div class="hud-left">
-                <span id="hud-level" class="hud-item">📍 Level 1</span>
-                <span id="hud-wave" class="hud-item">🌊 Wave 0/0</span>
+                <span id="td-hud-level" class="hud-item">📍 第 1 關</span>
+                <span id="td-hud-wave" class="hud-item">🌊 波次 0/0</span>
             </div>
             <div class="hud-center">
-                <span id="hud-gold" class="hud-item gold">💰 100</span>
-                <span id="hud-lives" class="hud-item lives">❤️ 20</span>
-                <span id="hud-score" class="hud-item">⭐ 0</span>
+                <span id="td-hud-gold" class="hud-item gold">💰 0</span>
+                <span id="td-hud-lives" class="hud-item lives">❤️ 20</span>
+                <span id="td-hud-score" class="hud-item">⭐ 0</span>
             </div>
             <div class="hud-right">
-                <button id="btn-start-wave" class="hud-btn wave-btn">▶ Start Wave</button>
-                <button id="btn-fast" class="hud-btn">⏩</button>
-                <button id="btn-pause" class="hud-btn">⏸</button>
-                <button id="btn-quit" class="hud-btn quit-btn">✕</button>
+                <button id="td-btn-start-wave" class="hud-btn wave-btn">▶ 開始波次</button>
+                <button id="td-btn-fast" class="hud-btn">⏩</button>
+                <button id="td-btn-pause" class="hud-btn">⏸</button>
+                <button class="hud-btn" data-panel="panel-skill">技能表</button>
+                <button class="hud-btn" data-panel="panel-ult">絕招表</button>
+                <button class="hud-btn" data-panel="panel-boss">BOSS表</button>
+                <button id="td-btn-quit" class="hud-btn quit-btn">✕</button>
             </div>
         </div>
 
-        <!-- Phaser Game Container -->
-        <div id="game-container"></div>
-
-        <!-- Legacy Canvas (hidden, kept for compatibility) -->
-        <canvas id="game-canvas" style="display:none"></canvas>
-
-        <!-- Tower Shop -->
-        <div id="tower-shop">
-            <h3>🏪 Towers</h3>
-            <div id="shop-items"></div>
+        <!-- 上方中央：施法播報條 -->
+        <div id="td-banner" class="hidden">
+            <div id="td-banner-text"></div>
+            <div id="td-banner-bar"><div id="td-banner-fill"></div></div>
         </div>
 
-        <!-- Tower Info Panel (shown when tower selected) -->
-        <div id="tower-info" class="hidden">
-            <h3 id="info-name">Tower</h3>
-            <div id="info-stats"></div>
-            <div id="info-actions">
-                <button id="btn-upgrade" class="info-btn upgrade-btn">⬆ Upgrade</button>
-                <button id="btn-sell" class="info-btn sell-btn">💰 Sell</button>
+        <!-- 遊戲區 -->
+        <div id="td-stage">
+            <canvas id="td-canvas"></canvas>
+
+            <!-- 武將塔商店 -->
+            <div id="td-shop">
+                <h3>🏪 武將塔</h3>
+                <div id="td-shop-items"></div>
             </div>
-            <button id="btn-deselect" class="info-btn deselect-btn">✕ Close</button>
+
+            <!-- 塔資訊 -->
+            <div id="td-tower-info" class="hidden">
+                <h3 id="td-info-name">塔</h3>
+                <div id="td-info-stats"></div>
+                <div class="td-info-actions">
+                    <button id="td-btn-upgrade" class="info-btn upgrade-btn">⬆ 升級</button>
+                    <button id="td-btn-sell" class="info-btn sell-btn">💰 賣出</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 六大絕招列 -->
+        <div id="td-ult-bar"></div>
+
+        <!-- 遊戲內三張表（可開關面板） -->
+        <div id="panel-skill" class="td-panel hidden">
+            <div class="td-panel-head"><span>📋 技能表（武將塔）</span><button class="td-panel-close">✕</button></div>
+            <div id="td-table-skill-game" class="td-panel-body"></div>
+        </div>
+        <div id="panel-ult" class="td-panel hidden">
+            <div class="td-panel-head"><span>⚔️ 絕招表（六大絕）</span><button class="td-panel-close">✕</button></div>
+            <div id="td-table-ult-game" class="td-panel-body"></div>
+        </div>
+        <div id="panel-boss" class="td-panel hidden">
+            <div class="td-panel-head"><span>👑 BOSS 表（50 關）</span><button class="td-panel-close">✕</button></div>
+            <div id="td-table-boss-game" class="td-panel-body"></div>
         </div>
     </div>
 
-    <!-- Victory / Defeat Overlay -->
-    <div id="overlay" class="overlay hidden">
+    <!-- 勝負結算 -->
+    <div id="td-overlay" class="overlay hidden">
         <div class="overlay-content">
-            <h2 id="overlay-title"></h2>
-            <p id="overlay-message"></p>
-            <div id="overlay-stars" class="stars"></div>
+            <h2 id="td-ov-title"></h2>
+            <p id="td-ov-msg"></p>
             <div class="overlay-buttons">
-                <button id="btn-retry" class="menu-btn">🔄 Retry</button>
-                <button id="btn-next" class="menu-btn primary">▶ Next Level</button>
-                <button id="btn-menu" class="menu-btn">🏠 Menu</button>
+                <button id="td-btn-retry" class="menu-btn">🔄 重玩</button>
+                <button id="td-btn-next" class="menu-btn primary">▶ 下一關</button>
+                <button id="td-btn-menu" class="menu-btn">🏠 主選單</button>
             </div>
         </div>
     </div>
 
-    <script src="js/game.js"></script>
+    <!-- 資料與引擎（純 HTML，開檔即玩） -->
+    <script src="js/levels.js"></script>
+    <script src="js/td_data.js"></script>
+    <script src="js/td_engine.js"></script>
     <script>
-    /* ============================================
-       UI ↔ Phaser 橋接
-       點擊 Play 按鈕 → 隱藏 HTML 選單 → 啟動 Phaser 遊戲
-       ============================================ */
     document.addEventListener("DOMContentLoaded", function () {
-      const playBtn = document.getElementById("btn-play");
-      const menuScreen = document.getElementById("menu-screen");
-      const howScreen = document.getElementById("how-screen");
-      const levelScreen = document.getElementById("level-screen");
-      const gameScreen = document.getElementById("game-screen");
-      const btnHow = document.getElementById("btn-how");
-      const btnHowBack = document.getElementById("btn-how-back");
-      const btnLang = document.getElementById("btn-lang");
-      const btnQuit = document.getElementById("btn-quit");
-      let gameInstance = null;
-
-      // Play 按鈕 → 隱藏選單，顯示遊戲畫面，啟動 Phaser
-      if (playBtn) {
-        playBtn.addEventListener("click", function () {
-          // 隱藏所有選單
-          if (menuScreen) menuScreen.style.display = "none";
-          if (howScreen) howScreen.style.display = "none";
-          if (levelScreen) levelScreen.style.display = "none";
-          // 顯示遊戲畫面
-          if (gameScreen) {
-            gameScreen.classList.add("active");
-            gameScreen.style.display = "flex";
-          }
-          // 啟動 Phaser 遊戲（只建立一次）
-          if (!gameInstance) {
-            gameInstance = startGame();
-          }
-        });
+      const screens = {
+        menu: document.getElementById("menu-screen"),
+        how: document.getElementById("how-screen"),
+        codex: document.getElementById("codex-screen"),
+        level: document.getElementById("level-screen"),
+        game: document.getElementById("game-screen"),
+      };
+      function show(name) {
+        Object.keys(screens).forEach(function (k) { screens[k].classList.toggle("active", k === name); });
       }
 
-      // How to Play 按鈕
-      if (btnHow) {
-        btnHow.addEventListener("click", function () {
-          if (menuScreen) menuScreen.style.display = "none";
-          if (howScreen) {
-            howScreen.classList.add("active");
-            howScreen.style.display = "flex";
-          }
-        });
-      }
+      // 初始化引擎 UI 與資料表
+      TD3K.initUI();
+      TD3K.bindCanvasAndShop();
 
-      // How to Play 返回按鈕
-      if (btnHowBack) {
-        btnHowBack.addEventListener("click", function () {
-          if (howScreen) {
-            howScreen.classList.remove("active");
-            howScreen.style.display = "none";
-          }
-          if (menuScreen) {
-            menuScreen.classList.add("active");
-            menuScreen.style.display = "flex";
-          }
-        });
-      }
+      // 把遊戲內三張表填入（複用主選單圖鑑內容）
+      ["skill", "ult", "boss"].forEach(function (t) {
+        const src = document.getElementById("td-table-" + t);
+        const dst = document.getElementById("td-table-" + t + "-game");
+        if (src && dst) dst.innerHTML = src.innerHTML;
+      });
 
-      // 語言切換按鈕
-      if (btnLang) {
-        btnLang.addEventListener("click", function () {
-          const current = btnLang.textContent;
-          if (current.indexOf("中文") !== -1) {
-            btnLang.textContent = "🌐 English";
-            document.querySelector(".game-title").textContent = "⚔️ 守護者之境 ⚔️";
-            document.querySelector(".game-subtitle").textContent = "塔防遊戲";
-            playBtn.textContent = "▶ 開始遊戲";
-            btnHow.textContent = "📖 遊戲說明";
-          } else {
-            btnLang.textContent = "🌐 繁體中文";
-            document.querySelector(".game-title").textContent = "⚔️ Guardians of the Realm ⚔️";
-            document.querySelector(".game-subtitle").textContent = "Tower Defense";
-            playBtn.textContent = "▶ Play";
-            btnHow.textContent = "📖 How to Play";
-          }
-        });
-      }
+      // 主選單按鈕
+      document.getElementById("btn-play").addEventListener("click", function () {
+        TD3K.buildLevelGrid(function (idx) { show("game"); TD3K.startLevel(idx); });
+        show("level");
+      });
+      document.getElementById("btn-how").addEventListener("click", function () { show("how"); });
+      document.getElementById("btn-how-back").addEventListener("click", function () { show("menu"); });
+      document.getElementById("btn-codex").addEventListener("click", function () { show("codex"); });
+      document.getElementById("btn-codex-back").addEventListener("click", function () { show("menu"); });
+      document.getElementById("btn-level-back").addEventListener("click", function () { show("menu"); });
 
-      // 退出遊戲 → 回到主選單
-      if (btnQuit) {
-        btnQuit.addEventListener("click", function () {
-          if (gameScreen) {
-            gameScreen.classList.remove("active");
-            gameScreen.style.display = "none";
-          }
-          // 銷毀 Phaser 實體以重新開始
-          if (gameInstance) {
-            gameInstance.destroy(true);
-            gameInstance = null;
-          }
-          if (menuScreen) {
-            menuScreen.classList.add("active");
-            menuScreen.style.display = "flex";
-          }
+      // 圖鑑頁籤切換
+      document.querySelectorAll(".codex-tab").forEach(function (tab) {
+        tab.addEventListener("click", function () {
+          document.querySelectorAll(".codex-tab").forEach(function (t) { t.classList.remove("active"); });
+          tab.classList.add("active");
+          document.querySelectorAll(".codex-table").forEach(function (tb) { tb.classList.add("hidden"); });
+          document.getElementById(tab.getAttribute("data-tab")).classList.remove("hidden");
         });
-      }
+      });
+
+      // 退出 / 結算 → 回主選單
+      document.getElementById("td-btn-quit").addEventListener("click", function () { TD3K.stop(); show("menu"); });
+      document.getElementById("td-btn-menu").addEventListener("click", function () {
+        document.getElementById("td-overlay").classList.add("hidden");
+        TD3K.stop(); show("menu");
+      });
     });
     </script>
 </body>

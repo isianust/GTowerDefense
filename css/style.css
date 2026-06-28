@@ -468,3 +468,131 @@ kbd {
     .shop-item { min-width: 65px; padding: 5px 8px; }
     .game-title { font-size: 1.8rem; }
 }
+
+/* ============================================
+   三國塔防 — 新版 UI（桌機大畫面）
+   ============================================ */
+
+/* 遊戲區：畫布 + 商店 + 塔資訊 置中排列 */
+#game-screen { flex-direction: column; align-items: center; justify-content: flex-start; gap: 10px; padding-top: 8px; }
+#td-stage { position: relative; display: flex; align-items: flex-start; justify-content: center; gap: 12px; }
+#td-canvas {
+    background: #16213e;
+    border: 2px solid var(--glass-border);
+    border-radius: var(--radius);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    cursor: crosshair;
+}
+
+/* 上方中央：施法播報條 */
+#td-banner {
+    position: fixed; top: 64px; left: 50%; transform: translateX(-50%);
+    z-index: 50; min-width: 360px; max-width: 70vw;
+    background: rgba(10,14,23,0.92); border: 1px solid var(--glass-border);
+    border-radius: 10px; padding: 8px 16px; text-align: center;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.6);
+}
+#td-banner.hidden { display: none; }
+#td-banner-text { font-size: 1.05rem; font-weight: 700; color: #fde68a; margin-bottom: 6px; }
+#td-banner-bar { height: 8px; background: rgba(255,255,255,0.12); border-radius: 4px; overflow: hidden; }
+#td-banner-fill { height: 100%; width: 0%; background: var(--gold); transition: width 0.08s linear; }
+
+/* 武將塔商店（右側直列） */
+#td-shop {
+    width: 150px; background: var(--bg-panel); border: 1px solid var(--glass-border);
+    border-radius: var(--radius); padding: 10px; max-height: 78vh; overflow-y: auto;
+}
+#td-shop h3 { font-size: 0.95rem; margin-bottom: 8px; color: var(--gold); }
+#td-shop-items { display: flex; flex-direction: column; gap: 6px; }
+.td-shop-item {
+    display: flex; align-items: center; gap: 6px; padding: 6px 8px;
+    background: var(--glass); border: 1px solid var(--glass-border);
+    border-radius: 8px; cursor: pointer; font-size: 0.82rem; transition: 0.12s;
+}
+.td-shop-item:hover:not(.disabled) { background: rgba(255,255,255,0.12); transform: translateX(-2px); }
+.td-shop-item.selected { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-glow); }
+.td-shop-item.disabled { opacity: 0.45; cursor: not-allowed; }
+.td-shop-icon { font-size: 1.1rem; }
+.td-shop-name { flex: 1; }
+.td-shop-cost { color: var(--gold); font-size: 0.72rem; }
+
+/* 塔資訊面板 */
+#td-tower-info {
+    position: absolute; left: 8px; top: 8px; width: 220px;
+    background: var(--bg-panel); border: 1px solid var(--glass-border);
+    border-radius: var(--radius); padding: 12px; z-index: 20;
+}
+#td-tower-info.hidden { display: none; }
+#td-tower-info h3 { color: var(--gold); margin-bottom: 8px; }
+#td-info-stats { font-size: 0.85rem; line-height: 1.5; color: var(--text-dim); margin-bottom: 10px; }
+.td-info-actions { display: flex; gap: 6px; }
+.info-btn { flex: 1; padding: 6px; border: none; border-radius: 8px; cursor: pointer; font-size: 0.8rem; color: #fff; }
+.upgrade-btn { background: var(--green); }
+.upgrade-btn:disabled { background: #475569; cursor: not-allowed; }
+.sell-btn { background: var(--gold); }
+
+/* 六大絕招列 */
+#td-ult-bar { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.td-ult {
+    width: 96px; padding: 8px 6px; text-align: center; position: relative;
+    background: var(--glass); border: 1px solid var(--glass-border);
+    border-radius: 10px; cursor: pointer; transition: 0.12s;
+}
+.td-ult:hover { background: rgba(255,255,255,0.12); transform: translateY(-2px); }
+.td-ult-key { font-weight: 800; color: var(--gold); font-size: 1.1rem; }
+.td-ult-name { font-size: 0.82rem; margin-top: 2px; }
+.td-ult.cooldown { opacity: 0.55; }
+.td-ult-cd {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; font-weight: 800; color: #fff; pointer-events: none;
+}
+
+/* 遊戲內三張表（浮動面板） */
+.td-panel {
+    position: fixed; top: 80px; right: 16px; width: min(720px, 80vw); max-height: 72vh;
+    background: var(--bg-panel); border: 1px solid var(--glass-border);
+    border-radius: var(--radius); z-index: 60; display: flex; flex-direction: column;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.7);
+}
+.td-panel.hidden { display: none; }
+.td-panel-head { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--glass-border); font-weight: 700; color: var(--gold); }
+.td-panel-close { background: none; border: none; color: var(--text); font-size: 1rem; cursor: pointer; }
+.td-panel-body { overflow: auto; padding: 8px 12px; }
+
+/* 表格樣式 */
+.td-tbl { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.td-tbl th, .td-tbl td { border: 1px solid var(--glass-border); padding: 5px 8px; text-align: left; vertical-align: top; }
+.td-tbl th { background: rgba(255,255,255,0.06); color: var(--gold); position: sticky; top: 0; }
+.td-tbl tr.lord td { background: rgba(220,38,38,0.14); }
+
+/* 選關卡片 */
+.td-level-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px; max-height: 64vh; overflow-y: auto; padding: 4px;
+}
+.td-level-card {
+    background: var(--glass); border: 1px solid var(--glass-border); border-radius: 10px;
+    padding: 12px 8px; text-align: center; cursor: pointer; transition: 0.12s; position: relative;
+}
+.td-level-card:hover:not(.locked) { background: rgba(255,255,255,0.12); transform: translateY(-3px); border-color: var(--accent); }
+.td-level-card.locked { opacity: 0.45; cursor: not-allowed; }
+.td-level-card.lord { border-color: var(--red); box-shadow: 0 0 0 1px rgba(239,68,68,0.4); }
+.td-level-num { font-size: 0.78rem; color: var(--text-dim); }
+.td-level-boss { font-size: 0.98rem; font-weight: 700; margin-top: 4px; }
+.td-level-star { color: var(--gold); margin-top: 4px; }
+.td-lock { margin-top: 4px; }
+
+/* 圖鑑（主選單） */
+.codex-panel { width: min(900px, 92vw); }
+.codex-tabs { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.codex-tab { padding: 6px 12px; border: 1px solid var(--glass-border); background: var(--glass); color: var(--text); border-radius: 8px; cursor: pointer; }
+.codex-tab.active { border-color: var(--accent); color: var(--gold); }
+.codex-body { max-height: 60vh; overflow: auto; }
+.codex-table.hidden { display: none; }
+
+/* 響應式：窄畫面時商店改置底 */
+@media (max-width: 900px) {
+    #td-stage { flex-direction: column; align-items: center; }
+    #td-shop { width: 92vw; max-height: none; }
+    #td-shop-items { flex-direction: row; flex-wrap: wrap; }
+}
