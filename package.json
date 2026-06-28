@@ -13,7 +13,9 @@
     "format:check": "prettier --check \"src/**/*.{ts,tsx,js,json,css,html}\"",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:install": "playwright install --with-deps chromium"
   },
   "repository": {
     "type": "git",
