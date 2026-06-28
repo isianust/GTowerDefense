@@ -136,9 +136,22 @@ export function init(lvlIndex: number): void {
   };
   window.onresize = resizeCanvas;
 
-  // Start loop
+  // Start loop. In headless mode (E2E tests), skip rAF and let the test
+  // driver advance frames deterministically via step().
   if (animFrame) cancelAnimationFrame(animFrame);
-  loop();
+  if (!headless) loop();
+}
+
+// Headless mode disables the rAF loop so tests can drive frames via step().
+let headless = false;
+export function setHeadless(value: boolean): void {
+  headless = value;
+}
+
+// Advance the simulation by one frame (update + render) without rAF.
+export function step(): void {
+  if (!paused && !gameOver) update();
+  render();
 }
 
 function resizeCanvas(): void {
@@ -993,4 +1006,34 @@ export function stop(): void {
   canvas.onmousedown = null;
   canvas.onmousemove = null;
   canvas.onmouseleave = null;
+}
+
+// ---- Test/debug helpers (used by E2E driver) ----
+export function getEnemyCount(): number {
+  return enemies.length;
+}
+
+export function getTowerCount(): number {
+  return towers.length;
+}
+
+export function isGameOver(): boolean {
+  return gameOver;
+}
+
+// Place a tower at a buildable grid cell. Returns true on success.
+export function placeTowerAt(type: string, gx: number, gy: number): boolean {
+  selectedTowerType = type;
+  const before = towers.length;
+  placeTower(gx, gy);
+  return towers.length > before;
+}
+
+// Returns true if any live entity has a non-finite (NaN/Infinity) coordinate,
+// which would manifest as a broken/garbled frame.
+export function hasNaNState(): boolean {
+  const bad = (v: number): boolean => !Number.isFinite(v);
+  for (const e of enemies) if (bad(e.x) || bad(e.y)) return true;
+  for (const p of projectiles) if (bad(p.x) || bad(p.y)) return true;
+  return bad(gold) || bad(lives) || bad(score);
 }
